@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', function() {
     initCookieNotice();
     initAnimations();
     initImageLazyLoading();
+    initSearchOverlay();
+    initActiveNavigation();
 });
 
 // Smooth scrolling for navigation links
@@ -139,6 +141,11 @@ function initAnimations() {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('fade-in-up');
+                
+                // Trigger counter animation for stat items
+                if (entry.target.classList.contains('stat-item')) {
+                    animateCounter(entry.target);
+                }
             }
         });
     }, observerOptions);
@@ -146,6 +153,41 @@ function initAnimations() {
     // Observe elements for animation
     const animateElements = document.querySelectorAll('.service-card, .stat-item, .gallery-item, .search-card');
     animateElements.forEach(el => observer.observe(el));
+}
+
+// Animated counter function
+function animateCounter(statItem) {
+    const counterElement = statItem.querySelector('h3');
+    if (!counterElement) return;
+    
+    const text = counterElement.textContent;
+    const number = parseFloat(text.replace(/[^\d.]/g, ''));
+    const suffix = text.replace(/[\d.]/g, '');
+    const duration = 2000; // 2 seconds
+    const startTime = performance.now();
+    
+    function updateCounter(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // Easing function for smooth animation
+        const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+        const currentNumber = Math.floor(number * easeOutQuart);
+        
+        if (suffix.includes('M')) {
+            counterElement.textContent = `$${currentNumber.toFixed(1)}M`;
+        } else if (suffix.includes('+')) {
+            counterElement.textContent = `${currentNumber}+`;
+        } else {
+            counterElement.textContent = `${currentNumber}${suffix}`;
+        }
+        
+        if (progress < 1) {
+            requestAnimationFrame(updateCounter);
+        }
+    }
+    
+    requestAnimationFrame(updateCounter);
 }
 
 // Lazy loading for images
@@ -244,6 +286,132 @@ function enhanceSearchForm() {
 
 // Initialize search enhancements
 document.addEventListener('DOMContentLoaded', enhanceSearchForm);
+
+// Search overlay functionality
+function initSearchOverlay() {
+    const searchToggle = document.getElementById('searchToggle');
+    const searchOverlay = document.getElementById('searchOverlay');
+    const searchClose = document.getElementById('searchClose');
+    const searchInput = document.getElementById('searchInput');
+    const searchSubmit = document.getElementById('searchSubmit');
+    const suggestionTags = document.querySelectorAll('.suggestion-tag');
+
+    if (!searchToggle || !searchOverlay) return;
+
+    // Open search overlay
+    searchToggle.addEventListener('click', function() {
+        searchOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        setTimeout(() => {
+            searchInput.focus();
+        }, 300);
+    });
+
+    // Close search overlay
+    function closeSearchOverlay() {
+        searchOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    searchClose.addEventListener('click', closeSearchOverlay);
+    
+    // Close on overlay click
+    searchOverlay.addEventListener('click', function(e) {
+        if (e.target === searchOverlay) {
+            closeSearchOverlay();
+        }
+    });
+
+    // Close on escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && searchOverlay.classList.contains('active')) {
+            closeSearchOverlay();
+        }
+    });
+
+    // Handle search submission
+    searchSubmit.addEventListener('click', function() {
+        const query = searchInput.value.trim();
+        if (query) {
+            handleSearchQuery(query);
+            closeSearchOverlay();
+        }
+    });
+
+    // Handle enter key in search input
+    searchInput.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            const query = this.value.trim();
+            if (query) {
+                handleSearchQuery(query);
+                closeSearchOverlay();
+            }
+        }
+    });
+
+    // Handle suggestion tag clicks
+    suggestionTags.forEach(tag => {
+        tag.addEventListener('click', function() {
+            searchInput.value = this.textContent;
+            handleSearchQuery(this.textContent);
+            closeSearchOverlay();
+        });
+    });
+}
+
+// Handle search query
+function handleSearchQuery(query) {
+    showNotification(`Searching for: "${query}"`, 'info');
+    
+    // Scroll to listings section
+    const listingsSection = document.getElementById('listings');
+    if (listingsSection) {
+        const navbarHeight = document.querySelector('.navbar').offsetHeight;
+        const offsetTop = listingsSection.offsetTop - navbarHeight - 20;
+        
+        window.scrollTo({
+            top: Math.max(0, offsetTop),
+            behavior: 'smooth'
+        });
+    }
+    
+    // In a real application, you would send this query to your backend
+    console.log('Search query:', query);
+}
+
+// Active navigation highlighting
+function initActiveNavigation() {
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-link[href^="#"]');
+
+    function updateActiveNav() {
+        let current = '';
+        
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.clientHeight;
+            const navbarHeight = document.querySelector('.navbar').offsetHeight;
+            
+            if (window.scrollY >= (sectionTop - navbarHeight - 100)) {
+                current = section.getAttribute('id');
+            }
+        });
+
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${current}`) {
+                link.classList.add('active');
+            }
+        });
+    }
+
+    // Update on scroll
+    window.addEventListener('scroll', debounce(updateActiveNav, 100));
+    
+    // Initial call
+    updateActiveNav();
+}
 
 // Gallery lightbox functionality
 function initGalleryLightbox() {

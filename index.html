@@ -19,6 +19,9 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <!-- Skip to content link for accessibility -->
+    <a href="#home" class="skip-link">Skip to main content</a>
+    
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top shadow-sm">
         <div class="container">
@@ -49,6 +52,11 @@
                         <a class="nav-link" href="#contact">Contact</a>
                     </li>
                     <li class="nav-item">
+                        <button class="btn btn-outline-primary me-2" id="searchToggle" type="button">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </li>
+                    <li class="nav-item">
                         <a class="btn btn-primary ms-2 px-4" href="tel:206-919-6886">
                             <i class="fas fa-phone me-1"></i>
                             CALL NOW
@@ -58,6 +66,33 @@
             </div>
         </div>
     </nav>
+
+    <!-- Search Overlay -->
+    <div id="searchOverlay" class="search-overlay">
+        <div class="search-container">
+            <div class="search-header">
+                <h3>Search Properties</h3>
+                <button class="btn-close" id="searchClose">&times;</button>
+            </div>
+            <div class="search-content">
+                <div class="search-input-group">
+                    <input type="text" class="search-input" placeholder="Search by location, price, or property type..." id="searchInput">
+                    <button class="btn btn-primary" id="searchSubmit">
+                        <i class="fas fa-search me-2"></i>Search
+                    </button>
+                </div>
+                <div class="search-suggestions">
+                    <h6>Popular Searches:</h6>
+                    <div class="suggestion-tags">
+                        <span class="suggestion-tag">Pahrump Homes</span>
+                        <span class="suggestion-tag">Under $500k</span>
+                        <span class="suggestion-tag">3+ Bedrooms</span>
+                        <span class="suggestion-tag">Commercial</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Hero Section -->
     <section id="home" class="hero-section">
@@ -107,15 +142,24 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="stats-grid">
-                        <div class="stat-item text-center p-4 bg-white rounded shadow">
+                        <div class="stat-item">
+                            <div class="stat-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
                             <h3 class="display-6 fw-bold text-primary">90+</h3>
                             <p class="mb-0">Clients Helped in 2021</p>
                         </div>
-                        <div class="stat-item text-center p-4 bg-white rounded shadow">
+                        <div class="stat-item">
+                            <div class="stat-icon">
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
                             <h3 class="display-6 fw-bold text-primary">$28.5M</h3>
                             <p class="mb-0">In Sales Closed</p>
                         </div>
-                        <div class="stat-item text-center p-4 bg-white rounded shadow">
+                        <div class="stat-item">
+                            <div class="stat-icon">
+                                <i class="fas fa-award"></i>
+                            </div>
                             <h3 class="display-6 fw-bold text-primary">30+</h3>
                             <p class="mb-0">Years Experience</p>
                         </div>
@@ -253,41 +297,128 @@
     </section>
 
     <!-- Photo Gallery Section -->
-    <section class="py-5">
+    <section id="gallery" class="py-5 bg-light">
         <div class="container">
             <div class="row text-center mb-5">
                 <div class="col-lg-8 mx-auto">
                     <h2 class="display-5 fw-bold text-primary mb-3">Photo Gallery</h2>
-                    <p class="lead">Featured Properties</p>
+                    <p class="lead">Featured Properties & Achievements</p>
+                    <div class="divider mx-auto mb-4"></div>
                 </div>
             </div>
             
-            <div class="row g-4">
-                <div class="col-lg-4 col-md-6">
+            <!-- Property Gallery -->
+            <div class="row mb-5">
+                <div class="col-12">
+                    <h3 class="h4 text-center text-primary mb-4">Featured Properties</h3>
+                </div>
+            </div>
+            
+            <div class="row g-4 mb-5">
+                <div class="col-lg-3 col-md-6">
                     <div class="gallery-item">
-                        <img src="https://picsum.photos/400/300?random=3" alt="Property 1" class="img-fluid rounded shadow">
+                        <img src="assets/1.webp" alt="Luxury Property in Pahrump" class="img-fluid">
                         <div class="gallery-overlay">
-                            <h5>Luxury Home</h5>
-                            <p>$850,000</p>
+                            <div class="gallery-content">
+                                <h5>Luxury Home</h5>
+                                <p class="price">$850,000</p>
+                                <div class="gallery-actions">
+                                    <button class="btn btn-sm btn-primary">View Details</button>
+                                    <button class="btn btn-sm btn-outline-light">Contact</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-6">
+                <div class="col-lg-3 col-md-6">
                     <div class="gallery-item">
-                        <img src="https://picsum.photos/400/300?random=4" alt="Property 2" class="img-fluid rounded shadow">
+                        <img src="assets/2.webp" alt="Modern Property in Pahrump" class="img-fluid">
                         <div class="gallery-overlay">
-                            <h5>Modern Condo</h5>
-                            <p>$425,000</p>
+                            <div class="gallery-content">
+                                <h5>Modern Condo</h5>
+                                <p class="price">$425,000</p>
+                                <div class="gallery-actions">
+                                    <button class="btn btn-sm btn-primary">View Details</button>
+                                    <button class="btn btn-sm btn-outline-light">Contact</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-6">
+                <div class="col-lg-3 col-md-6">
                     <div class="gallery-item">
-                        <img src="https://picsum.photos/400/300?random=5" alt="Property 3" class="img-fluid rounded shadow">
+                        <img src="assets/3.webp" alt="Family Home in Pahrump" class="img-fluid">
                         <div class="gallery-overlay">
-                            <h5>Family Home</h5>
-                            <p>$675,000</p>
+                            <div class="gallery-content">
+                                <h5>Family Home</h5>
+                                <p class="price">$675,000</p>
+                                <div class="gallery-actions">
+                                    <button class="btn btn-sm btn-primary">View Details</button>
+                                    <button class="btn btn-sm btn-outline-light">Contact</button>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <div class="gallery-item">
+                        <img src="assets/4.webp" alt="Commercial Property in Pahrump" class="img-fluid">
+                        <div class="gallery-overlay">
+                            <div class="gallery-content">
+                                <h5>Commercial Space</h5>
+                                <p class="price">$1,200,000</p>
+                                <div class="gallery-actions">
+                                    <button class="btn btn-sm btn-primary">View Details</button>
+                                    <button class="btn btn-sm btn-outline-light">Contact</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Certifications & Awards -->
+            <div class="row">
+                <div class="col-12">
+                    <h3 class="h4 text-center text-primary mb-4">Certifications & Affiliations</h3>
+                </div>
+            </div>
+            
+            <div class="row g-4 justify-content-center">
+                <div class="col-lg-2 col-md-4 col-6">
+                    <div class="certification-card">
+                        <div class="cert-logo">
+                            <i class="fas fa-mountain"></i>
+                        </div>
+                        <h6>The Ridge Realty Group</h6>
+                        <p class="small text-muted">Real Estate Excellence</p>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 col-6">
+                    <div class="certification-card">
+                        <div class="cert-logo">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <h6>Equal Housing</h6>
+                        <p class="small text-muted">Opportunity Provider</p>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 col-6">
+                    <div class="certification-card">
+                        <div class="cert-logo realtor">
+                            <i class="fas fa-certificate"></i>
+                        </div>
+                        <h6>REALTOR®</h6>
+                        <p class="small text-muted">Licensed Professional</p>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 col-6">
+                    <div class="certification-card">
+                        <div class="cert-logo chamber">
+                            <i class="fas fa-building"></i>
+                        </div>
+                        <h6>Chamber of Commerce</h6>
+                        <p class="small text-muted">Valley Member</p>
                     </div>
                 </div>
             </div>
