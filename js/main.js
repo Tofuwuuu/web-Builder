@@ -92,24 +92,188 @@ function handleContactFormSubmission(form) {
     }, 2000);
 }
 
-// Handle search form submission
-function handleSearchFormSubmission(form) {
-    const formData = new FormData(form);
-    const searchParams = {};
-    
-    // Collect form data
-    for (let [key, value] of formData.entries()) {
-        if (value.trim()) {
-            searchParams[key] = value;
+// Enhanced search form functionality
+function initEnhancedSearchForm() {
+    const searchForm = document.getElementById('propertySearchForm');
+    const locationInput = document.getElementById('locationInput');
+    const locationSuggestions = document.getElementById('locationSuggestions');
+    const clearBtn = document.getElementById('clearBtn');
+    const searchResults = document.getElementById('searchResults');
+    const resultsGrid = document.getElementById('resultsGrid');
+
+    if (!searchForm) return;
+
+    // Location suggestions
+    const locations = [
+        'Pahrump, NV',
+        'Las Vegas, NV', 
+        'Henderson, NV',
+        'North Las Vegas, NV',
+        'Boulder City, NV',
+        'Mesquite, NV'
+    ];
+
+    // Location input with suggestions
+    locationInput.addEventListener('input', function() {
+        const query = this.value.toLowerCase();
+        if (query.length > 1) {
+            const filtered = locations.filter(loc => 
+                loc.toLowerCase().includes(query)
+            );
+            showLocationSuggestions(filtered);
+        } else {
+            hideLocationSuggestions();
         }
+    });
+
+    // Hide suggestions when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!locationInput.contains(e.target) && !locationSuggestions.contains(e.target)) {
+            hideLocationSuggestions();
+        }
+    });
+
+    // Show location suggestions
+    function showLocationSuggestions(suggestions) {
+        if (suggestions.length === 0) {
+            hideLocationSuggestions();
+            return;
+        }
+
+        locationSuggestions.innerHTML = suggestions.map(loc => 
+            `<div class="suggestion-item" data-location="${loc}">${loc}</div>`
+        ).join('');
+
+        // Add click handlers
+        locationSuggestions.querySelectorAll('.suggestion-item').forEach(item => {
+            item.addEventListener('click', function() {
+                locationInput.value = this.dataset.location;
+                hideLocationSuggestions();
+            });
+        });
+
+        locationSuggestions.style.display = 'block';
     }
-    
-    // Show search results (simulate)
-    showNotification('Searching for properties...', 'info');
-    
-    // In a real application, you would send this data to your backend
-    console.log('Search parameters:', searchParams);
+
+    // Hide location suggestions
+    function hideLocationSuggestions() {
+        locationSuggestions.style.display = 'none';
+    }
+
+    // Clear form
+    clearBtn.addEventListener('click', function() {
+        searchForm.reset();
+        hideLocationSuggestions();
+        hideSearchResults();
+    });
+
+    // Form submission
+    searchForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        handleEnhancedSearch(this);
+    });
+
+    // Handle enhanced search
+    function handleEnhancedSearch(form) {
+        const formData = new FormData(form);
+        const searchParams = {};
+        
+        // Collect form data
+        for (let [key, value] of formData.entries()) {
+            if (value.trim()) {
+                searchParams[key] = value;
+            }
+        }
+
+        // Show loading state
+        const searchBtn = form.querySelector('.search-btn');
+        const originalText = searchBtn.innerHTML;
+        searchBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Searching...';
+        searchBtn.disabled = true;
+
+        // Simulate search delay
+        setTimeout(() => {
+            // Show search results
+            showSearchResults(searchParams);
+            
+            // Reset button
+            searchBtn.innerHTML = originalText;
+            searchBtn.disabled = false;
+            
+            // Show notification
+            showNotification('Search completed! Found properties matching your criteria.', 'success');
+        }, 1500);
+    }
+
+    // Show search results
+    function showSearchResults(params) {
+        // Mock search results
+        const mockResults = [
+            {
+                price: '$425,000',
+                address: '123 Main St, Pahrump, NV',
+                bedrooms: 3,
+                bathrooms: 2,
+                sqft: '1,850',
+                type: 'Single Family'
+            },
+            {
+                price: '$675,000',
+                address: '456 Oak Ave, Pahrump, NV',
+                bedrooms: 4,
+                bathrooms: 3,
+                sqft: '2,200',
+                type: 'Single Family'
+            },
+            {
+                price: '$850,000',
+                address: '789 Pine Rd, Pahrump, NV',
+                bedrooms: 5,
+                bathrooms: 4,
+                sqft: '3,100',
+                type: 'Single Family'
+            }
+        ];
+
+        resultsGrid.innerHTML = mockResults.map(property => `
+            <div class="result-card">
+                <div class="result-image">
+                    <i class="fas fa-home fa-3x"></i>
+                </div>
+                <div class="result-content">
+                    <div class="result-price">${property.price}</div>
+                    <div class="result-address">${property.address}</div>
+                    <div class="result-features">
+                        <div class="feature">
+                            <i class="fas fa-bed"></i>
+                            <span>${property.bedrooms} beds</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-bath"></i>
+                            <span>${property.bathrooms} baths</span>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-ruler-combined"></i>
+                            <span>${property.sqft} sqft</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-sm w-100">View Details</button>
+                </div>
+            </div>
+        `).join('');
+
+        searchResults.style.display = 'block';
+        searchResults.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Hide search results
+    function hideSearchResults() {
+        searchResults.style.display = 'none';
+    }
 }
+
+// Initialize enhanced search form
+document.addEventListener('DOMContentLoaded', initEnhancedSearchForm);
 
 // Cookie notice functionality
 function initCookieNotice() {

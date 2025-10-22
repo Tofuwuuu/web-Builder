@@ -217,79 +217,145 @@
     <section id="listings" class="py-5 bg-light">
         <div class="container">
             <div class="row">
-                <div class="col-lg-8 mx-auto">
-                    <div class="search-card bg-white rounded shadow p-5">
-                        <h2 class="text-center fw-bold text-primary mb-4">Find Your Dream Home</h2>
-                        <h3 class="text-center text-warning mb-4">Search Listings</h3>
+                <div class="col-lg-10 mx-auto">
+                    <div class="search-card">
+                        <div class="search-header">
+                            <h2 class="text-center fw-bold text-primary mb-2">Find Your Dream Home</h2>
+                            <h3 class="text-center text-warning mb-4">Search Listings</h3>
+                            <div class="divider mx-auto mb-4"></div>
+                        </div>
                         
-                        <form class="row g-3">
-                            <div class="col-md-6">
-                                <label class="form-label">Location</label>
-                                <input type="text" class="form-control" placeholder="Enter city, state, or zip">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Type</label>
-                                <select class="form-select">
-                                    <option>Any Type</option>
-                                    <option>Single Family</option>
-                                    <option>Condo</option>
-                                    <option>Townhouse</option>
-                                    <option>Commercial</option>
-                                </select>
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Bedrooms</label>
-                                <select class="form-select">
-                                    <option>Any Number</option>
-                                    <option>Studio</option>
-                                    <option>1+</option>
-                                    <option>2+</option>
-                                    <option>3+</option>
-                                    <option>4+</option>
-                                    <option>5+</option>
-                                    <option>6+</option>
-                                </select>
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Baths</label>
-                                <select class="form-select">
-                                    <option>Any Number</option>
-                                    <option>1+</option>
-                                    <option>2+</option>
-                                    <option>3+</option>
-                                    <option>4+</option>
-                                    <option>5+</option>
-                                    <option>6+</option>
-                                </select>
-                            </div>
-                            <div class="col-md-4">
-                                <label class="form-label">Sort By</label>
-                                <select class="form-select">
-                                    <option>Newest</option>
-                                    <option>Oldest</option>
-                                    <option>Least Expensive to Most</option>
-                                    <option>Most Expensive to Least</option>
-                                    <option>Bedrooms (Low to High)</option>
-                                    <option>Bedrooms (High to Low)</option>
-                                    <option>Bathrooms (Low to High)</option>
-                                    <option>Bathrooms (High to Low)</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Min Price</label>
-                                <input type="number" class="form-control" placeholder="Min Price">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label">Max Price</label>
-                                <input type="number" class="form-control" placeholder="Max Price">
-                            </div>
-                            <div class="col-12 text-center">
-                                <button type="submit" class="btn btn-primary btn-lg px-5">
-                                    <i class="fas fa-search me-2"></i>
-                                    Search Now
-                                </button>
+                        <form class="search-form" id="propertySearchForm">
+                            <div class="row g-4">
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">
+                                            <i class="fas fa-map-marker-alt me-2"></i>Location
+                                        </label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" placeholder="Enter city, state, or zip" id="locationInput">
+                                            <button class="btn btn-outline-secondary" type="button" id="locationBtn">
+                                                <i class="fas fa-crosshairs"></i>
+                                            </button>
+                                        </div>
+                                        <div class="suggestions" id="locationSuggestions"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">
+                                            <i class="fas fa-home me-2"></i>Property Type
+                                        </label>
+                                        <select class="form-select" id="propertyType">
+                                            <option value="">Any Type</option>
+                                            <option value="single-family">Single Family</option>
+                                            <option value="condo">Condo</option>
+                                            <option value="townhouse">Townhouse</option>
+                                            <option value="commercial">Commercial</option>
+                                            <option value="land">Land</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-lg-3 col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">
+                                            <i class="fas fa-bed me-2"></i>Bedrooms
+                                        </label>
+                                        <select class="form-select" id="bedrooms">
+                                            <option value="">Any Number</option>
+                                            <option value="0">Studio</option>
+                                            <option value="1">1+</option>
+                                            <option value="2">2+</option>
+                                            <option value="3">3+</option>
+                                            <option value="4">4+</option>
+                                            <option value="5">5+</option>
+                                            <option value="6">6+</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-lg-3 col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">
+                                            <i class="fas fa-bath me-2"></i>Bathrooms
+                                        </label>
+                                        <select class="form-select" id="bathrooms">
+                                            <option value="">Any Number</option>
+                                            <option value="1">1+</option>
+                                            <option value="2">2+</option>
+                                            <option value="3">3+</option>
+                                            <option value="4">4+</option>
+                                            <option value="5">5+</option>
+                                            <option value="6">6+</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-lg-6 col-md-12">
+                                    <div class="form-group">
+                                        <label class="form-label">
+                                            <i class="fas fa-sort me-2"></i>Sort By
+                                        </label>
+                                        <select class="form-select" id="sortBy">
+                                            <option value="newest">Newest First</option>
+                                            <option value="oldest">Oldest First</option>
+                                            <option value="price-low">Price: Low to High</option>
+                                            <option value="price-high">Price: High to Low</option>
+                                            <option value="bedrooms-low">Bedrooms: Low to High</option>
+                                            <option value="bedrooms-high">Bedrooms: High to Low</option>
+                                            <option value="size-low">Size: Small to Large</option>
+                                            <option value="size-high">Size: Large to Small</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">
+                                            <i class="fas fa-dollar-sign me-2"></i>Min Price
+                                        </label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">$</span>
+                                            <input type="number" class="form-control" placeholder="0" id="minPrice">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">
+                                            <i class="fas fa-dollar-sign me-2"></i>Max Price
+                                        </label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">$</span>
+                                            <input type="number" class="form-control" placeholder="No Limit" id="maxPrice">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-12">
+                                    <div class="search-actions">
+                                        <button type="submit" class="btn btn-primary btn-lg search-btn">
+                                            <i class="fas fa-search me-2"></i>
+                                            Search Properties
+                                        </button>
+                                        <button type="button" class="btn btn-outline-secondary btn-lg" id="clearBtn">
+                                            <i class="fas fa-times me-2"></i>
+                                            Clear All
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </form>
+                        
+                        <div class="search-results" id="searchResults" style="display: none;">
+                            <h4 class="text-center mb-4">Search Results</h4>
+                            <div class="results-grid" id="resultsGrid">
+                                <!-- Results will be populated here -->
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -480,14 +546,77 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-dark text-white py-4">
+    <footer class="bg-dark text-white py-5">
         <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4">
+                    <h5 class="fw-bold mb-3">Marci Metzger</h5>
+                    <p class="mb-3">The Ridge Realty Group</p>
+                    <p class="mb-3">
+                        <i class="fas fa-map-marker-alt me-2"></i>
+                        3190 HW-160, Suite F<br>
+                        Pahrump, Nevada 89048
+                    </p>
+                    <p class="mb-3">
+                        <i class="fas fa-phone me-2"></i>
+                        <a href="tel:206-919-6886" class="text-white text-decoration-none">(206) 919-6886</a>
+                    </p>
+                </div>
+                
+                <div class="col-lg-4 mb-4">
+                    <h5 class="fw-bold mb-3">Quick Links</h5>
+                    <div class="row">
+                        <div class="col-6">
+                            <ul class="list-unstyled">
+                                <li><a href="#home" class="text-white-50 text-decoration-none">Home</a></li>
+                                <li><a href="#listings" class="text-white-50 text-decoration-none">Search Properties</a></li>
+                                <li><a href="#about" class="text-white-50 text-decoration-none">About Us</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-6">
+                            <ul class="list-unstyled">
+                                <li><a href="#services" class="text-white-50 text-decoration-none">Services</a></li>
+                                <li><a href="#gallery" class="text-white-50 text-decoration-none">Gallery</a></li>
+                                <li><a href="#contact" class="text-white-50 text-decoration-none">Contact</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 mb-4">
+                    <h5 class="fw-bold mb-3">Follow Us</h5>
+                    <p class="mb-3">Stay connected with us on social media</p>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/MarciHomes/" target="_blank" rel="noopener" class="social-link facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://www.instagram.com/marciandlauren_nvrealtors/" target="_blank" rel="noopener" class="social-link instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/marci-metzger-30642496/" target="_blank" rel="noopener" class="social-link linkedin">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                        <a href="https://www.yelp.com/biz/marci-metzger-the-ridge-realty-pahrump" target="_blank" rel="noopener" class="social-link yelp">
+                            <i class="fab fa-yelp"></i>
+                        </a>
+                    </div>
+                    <div class="mt-3">
+                        <small class="text-white-50">
+                            <i class="fas fa-star text-warning"></i>
+                            5.0 Stars on Yelp (8 Reviews)
+                        </small>
+                    </div>
+                </div>
+            </div>
+            
+            <hr class="my-4 border-secondary">
+            
             <div class="row align-items-center">
                 <div class="col-md-6">
-                    <p class="mb-0">Copyright © 2023 Marci METZGER Homes - All Rights Reserved</p>
+                    <p class="mb-0 text-white-50">Copyright © 2023 Marci METZGER Homes - All Rights Reserved</p>
                 </div>
                 <div class="col-md-6 text-md-end">
-                    <p class="mb-0">Powered by <strong>The Ridge Realty Group</strong></p>
+                    <p class="mb-0 text-white-50">Powered by <strong>The Ridge Realty Group</strong></p>
                 </div>
             </div>
         </div>
